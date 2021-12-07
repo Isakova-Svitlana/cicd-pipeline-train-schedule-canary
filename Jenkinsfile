@@ -38,6 +38,28 @@ pipeline {
                 }
             }
         }
+
+stage('CanaryDeploy') {
+  when {
+    branch 'master'
+  }
+  environment {
+    CANARY_REPLICAS = 1
+  }
+  steps {
+    kubernetesDeploy(
+      kubeconfigId: 'kubeconfig',
+      configs: 'train-schdeule-kube-canary.yml',
+      enableConfigSubstitution: true
+      )
+  }
+}
+Modify the DeployToProduction section but adding the following between the when { and steps { section:
+}
+environment {
+  CANARY_REPLICAS = 0
+}
+        
         stage('DeployToProduction') {
             when {
                 branch 'master'
