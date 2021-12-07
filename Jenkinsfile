@@ -53,17 +53,15 @@ stage('CanaryDeploy') {
       enableConfigSubstitution: true
       )
   }
-}
-Modify the DeployToProduction section but adding the following between the when { and steps { section:
-}
-environment {
-  CANARY_REPLICAS = 0
-}
-        
+}   
         stage('DeployToProduction') {
             when {
                 branch 'master'
             }
+            
+            environment {
+                 CANARY_REPLICAS = 0
+              }
             steps {
                 input 'Deploy to Production?'
                 milestone(1)
